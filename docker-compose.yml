@@ -13,6 +13,7 @@ services:
   
   api:
     build: .
+    container_name: apiZUS
     ports:
       - "8000:8000"
     depends_on:
