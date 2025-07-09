@@ -35,7 +35,6 @@ class DBTask(DBBaseModel):
     answer_options = Column(JSON, default=[])
     correct_answers = Column(JSON, nullable=False)
     user_answers = Column(JSON, default=None) 
-    is_solved = Column(Boolean, default=False)
     solved_at = Column(DateTime)
 
     graph_id = Column(Integer, ForeignKey("graph_data.id"))
