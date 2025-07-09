@@ -1,14 +1,14 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, JSON, Boolean, DateTime, Text, ForeignKey
 from sqlalchemy.orm import relationship
-from datetime import datetime
+from datetime import datetime, timezone
 
 Base = declarative_base() 
 
 class DBBaseModel(Base):
     __abstract__ = True
     id = Column(Integer, primary_key=True, index=True)
-    created_at = Column(DateTime, default=datetime.now(datetime.timezone.utc))
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
 
 class DBTaskImage(DBBaseModel):
@@ -32,12 +32,14 @@ class DBTask(DBBaseModel):
     
     template_name = Column(String(100), nullable=False)
     question = Column(Text, nullable=False)
-    correct_answer = Column(Text, nullable=False)
+    answer_options = Column(JSON, default=[])
+    correct_answers = Column(JSON, nullable=False)
+    user_answers = Column(JSON, default=None) 
     is_solved = Column(Boolean, default=False)
-    user_answer = Column(Text)
+    solved_at = Column(DateTime)
 
     graph_id = Column(Integer, ForeignKey("graph_data.id"))
-    graph = relationship("GraphData", backref="tasks")
+    graph = relationship("DBGraphData", backref="tasks")
     
     image_id = Column(Integer, ForeignKey("task_images.id"))
-    image = relationship("TaskImage", backref="tasks")
+    image = relationship("DBTaskImage", backref="tasks")

@@ -22,12 +22,17 @@ class Task(BaseModel):
 
     template_name: str
     question: str
-    correct_answer: Any
+    answer_options: list[str] = []
+    correct_answers: list[str]
+    user_answers: list[str] = None
+    is_solved: bool = False
+
     graph: Optional[GraphData] = None
     image: Optional[TaskImage] = None
-    is_solved: bool = False
-    user_answer: Optional[Any] = None
+
+    
     created_at: datetime = datetime.now()
+    solved_at: datetime
 
     @classmethod
     def from_db(cls, db_obj) -> 'Task':
