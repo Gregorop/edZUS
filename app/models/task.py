@@ -1,7 +1,7 @@
 from pydantic import BaseModel, ConfigDict
 from typing import Optional, Dict, Any, List, Union, Literal
 from datetime import datetime
-from base import DBTask, DBGraphData, DBTaskImage
+from app.models.base import DBTask, DBGraphData, DBTaskImage
 
 class TaskImage(BaseModel):
     model_config = ConfigDict(from_attributes=True)
