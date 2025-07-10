@@ -37,6 +37,9 @@ class DBTask(DBBaseModel):
     user_answers = Column(JSON, default=None) 
     solved_at = Column(DateTime)
 
+    variables = Column(JSON, default={})
+    formula = Column(String(255))
+
     graph_id = Column(Integer, ForeignKey("graph_data.id"))
     graph = relationship("DBGraphData", backref="tasks")
     

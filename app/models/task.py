@@ -30,7 +30,9 @@ class Task(BaseModel):
     graph: Optional[GraphData] = None
     image: Optional[TaskImage] = None
 
-    
+    variables: dict[str, Any] = {}
+    formula: Optional[str] = None
+
     created_at: datetime = datetime.now()
     solved_at: datetime
 
