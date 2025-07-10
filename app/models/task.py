@@ -25,7 +25,6 @@ class Task(BaseModel):
     answer_options: list[str] = []
     correct_answers: list[str]
     user_answers: list[str] = None
-    is_solved: bool = False
 
     graph: Optional[GraphData] = None
     image: Optional[TaskImage] = None
@@ -39,9 +38,11 @@ class Task(BaseModel):
 
     @classmethod
     def from_db(cls, db_obj) -> 'Task':
+        '''чтобы задачу из бд выдать на фронт'''
         return cls.model_validate(db_obj)
 
     def to_orm(self) -> DBTask:
+        '''решенную задачу с фронта засунуть в бд'''
         db_task = DBTask(**self.model_dump(exclude={"graph", "image"}))
         
         if self.graph:
