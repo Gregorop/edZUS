@@ -30,6 +30,7 @@ class Task(BaseModel):
     graph: Optional[GraphData] = None
     image: Optional[TaskImage] = None
 
+    table: dict[str, Any] = {}
     variables: dict[str, Any] = {}
     formula: Optional[str] = None
 

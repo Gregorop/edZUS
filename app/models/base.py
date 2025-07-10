@@ -37,6 +37,7 @@ class DBTask(DBBaseModel):
     user_answers = Column(JSON, default=None) 
     solved_at = Column(DateTime)
 
+    table = Column(JSON, default={})
     variables = Column(JSON, default={})
     formula = Column(String(255))
 
