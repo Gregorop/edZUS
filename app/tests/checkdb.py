@@ -2,9 +2,10 @@ import asyncio
 
 from app.core.database import engine
 
-async def test_connection():
+async def check_connection():
+    '''ручками запустить проверить видит ли контейнер постгреса'''
     async with engine.connect() as conn:
         print("Подключение к PostgreSQL успешно!")
     await engine.dispose()
 
-asyncio.run(test_connection())
+asyncio.run(check_connection())

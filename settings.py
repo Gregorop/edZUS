@@ -9,3 +9,4 @@ POSTGRES_USER = getenv("POSTGRES_USER")
 POSTGRES_DB = getenv("POSTGRES_DB")
 
 SQLALCHEMY_DATABASE_URL = f"postgresql+asyncpg://{POSTGRES_USER}:{DB_PASSWORD}@localhost:5432/{POSTGRES_DB}"
+SQLALCHEMY_TEST_DATABASE_URL = f"postgresql+asyncpg://{POSTGRES_USER}:{DB_PASSWORD}@localhost:5432/test_db"
