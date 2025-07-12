@@ -2,7 +2,7 @@ from random import randint
 from ..base import DBTask
 from ..task_template import BaseTaskTemplate
 
-class FooTemplate(BaseTaskTemplate):
+class OneActionFormulaTemplate(BaseTaskTemplate):
     def __init__(self, formula:str,_question, **_param_ranges):
         self._name = "тест уравнение"
         self._description = "Решение линейных уравнений вида ax + b = 0" 

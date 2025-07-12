@@ -1,1 +1,1 @@
-from .foo_template import FooTemplate
+from .one_action_formula_template import OneActionFormulaTemplate

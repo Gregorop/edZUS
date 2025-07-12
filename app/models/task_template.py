@@ -17,7 +17,7 @@ class ITaskTemplate(ABC):
     @property
     @abstractmethod
     def question(self) -> str:
-        """Текст вопроса задачи, может быть строкой, либо в нее надо подставлять переменные"""
+        """Текст вопроса задачи, сначала f строка, в нее надо подставлять переменные"""
         pass
 
     @abstractmethod
