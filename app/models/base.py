@@ -1,5 +1,5 @@
 from sqlalchemy.orm import declarative_base
-from sqlalchemy import Column, Integer, String, JSON, Boolean, DateTime, Text, ForeignKey
+from sqlalchemy import Column, Integer, String, JSON, DateTime, Text, ForeignKey
 from sqlalchemy.orm import relationship
 from datetime import datetime, timezone
 Base = declarative_base() 
@@ -7,7 +7,7 @@ Base = declarative_base()
 class DBBaseModel(Base):
     __abstract__ = True
     id = Column(Integer, primary_key=True, index=True)
-    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    created_at = Column(DateTime(timezone=True), default=datetime.now(timezone.utc))
 
 
 class DBTaskImage(DBBaseModel):

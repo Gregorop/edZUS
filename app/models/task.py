@@ -22,19 +22,19 @@ class Task(BaseModel):
 
     template_name: str
     question: str
-    answer_options: list[str] = []
-    correct_answers: list[str]
-    user_answers: list[str] = None
+    answer_options: Optional[list[str|int]] = None
+    correct_answers: list[str|int|float]
+    user_answers: Optional[list[str|int]] = None
 
     graph: Optional[GraphData] = None
     image: Optional[TaskImage] = None
 
-    table: dict[str, Any] = {}
+    table: Optional[dict[str, Any]] = {}
     variables: dict[str, Any] = {}
     formula: Optional[str] = None
 
     created_at: datetime = datetime.now()
-    solved_at: datetime
+    solved_at: Optional[datetime]
 
     @classmethod
     def from_db(cls, db_obj) -> 'Task':
@@ -42,7 +42,7 @@ class Task(BaseModel):
         return cls.model_validate(db_obj)
 
     def to_orm(self) -> DBTask:
-        '''решенную задачу с фронта засунуть в бд'''
+        '''решенную задачу c фронта засунуть в бд'''
         db_task = DBTask(**self.model_dump(exclude={"graph", "image"}))
         
         if self.graph:
