@@ -4,7 +4,7 @@ from ..task_template import BaseTaskTemplate
 
 class OneActionFormulaTemplate(BaseTaskTemplate):
     def __init__(self, formula:str,_question, **_param_ranges):
-        self._name = "тест уравнение"
+        self._name = "one_action_formula"
         self._description = "Решение линейных уравнений вида ax + b = 0" 
         self._question_raw = _question
 

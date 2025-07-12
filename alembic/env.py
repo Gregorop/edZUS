@@ -5,6 +5,8 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from alembic import context
 from app.core.database import SQLALCHEMY_DATABASE_URL
 from app.models.task import Task, TaskImage, GraphData
+from app.models.one_action_tasks_templates import OneActionFormula
+
 from sqlmodel import SQLModel
 
 target_metadata = SQLModel.metadata
