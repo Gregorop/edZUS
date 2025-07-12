@@ -4,11 +4,13 @@ from sqlalchemy.ext.asyncio import create_async_engine
 
 from alembic import context
 from app.core.database import SQLALCHEMY_DATABASE_URL
-from app.models.base import Base
+from app.models.task import Task, TaskImage, GraphData
+from sqlmodel import SQLModel
 
+target_metadata = SQLModel.metadata
 config = context.config
 config.set_main_option('sqlalchemy.url', SQLALCHEMY_DATABASE_URL)
-target_metadata = Base.metadata
+target_metadata = SQLModel.metadata
 
 def do_run_migrations(connection):
     context.configure(

@@ -1,5 +1,5 @@
 from random import randint
-from ..base import DBTask
+from ..task import Task
 from ..task_template import BaseTaskTemplate
 
 class OneActionFormulaTemplate(BaseTaskTemplate):
@@ -25,12 +25,12 @@ class OneActionFormulaTemplate(BaseTaskTemplate):
         self._question += "Успехов!"
         return self._question
 
-    def generate_task(self) -> DBTask:
+    def generate_task(self) -> Task:
         self._generate_params() #каждый вызов - параметры обновляем
         safe_globals = {'__builtins__': None}
         result = eval(self._formula, safe_globals, self.params)
         
-        return DBTask(
+        return Task(
             template_name=self.name,
             question=self.question(),
             correct_answers=[result],

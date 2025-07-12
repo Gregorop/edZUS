@@ -1,54 +1,49 @@
-from pydantic import BaseModel, ConfigDict
-from typing import Optional, Dict, Any, List, Union, Literal
 from datetime import datetime
-from app.models.base import DBTask, DBGraphData, DBTaskImage
+from enum import Enum
+from typing import Any, Dict, List, Optional, Union
 
-class TaskImage(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
+import sqlalchemy as sa
+from sqlmodel import Field, Relationship
 
-    base64: str
-    mime_type: str  # "image/png", "image/jpeg"
+from app.models.base import BaseModel
 
-class GraphData(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
 
-    type: Literal["line", "histogram"]
-    x: List[Union[float, str]]
-    y: List[float]
-    options: Dict[str, Any] = {}
+class GraphType(str, Enum):
+    line = "line"
+    histogram = "histogram"
 
-class Task(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
+class TaskImage(BaseModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    base64: str = Field(sa_type=sa.Text)
+    mime_type: str = Field(max_length=50,sa_type=sa.String)  # "image/png", "image/jpeg"
 
-    template_name: str
-    question: str
-    answer_options: Optional[list[str|int]] = None
-    correct_answers: list[str|int|float]
-    user_answers: Optional[list[str|int]] = None
+    tasks: List["Task"] = Relationship(back_populates="image")
 
-    graph: Optional[GraphData] = None
-    image: Optional[TaskImage] = None
+class GraphData(BaseModel,table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    type: GraphType = Field(max_length=20)
+    x: List[Union[float, str]] = Field(sa_type=sa.JSON)
+    y: List[float] = Field(sa_type=sa.JSON)
+    options: Dict[str, Any] = Field(default={}, sa_type=sa.JSON)
 
-    table: Optional[dict[str, Any]] = {}
-    variables: dict[str, Any] = {}
-    formula: Optional[str] = None
+    tasks: List["Task"] = Relationship(back_populates="graph")
 
-    created_at: datetime = datetime.now()
-    solved_at: Optional[datetime]
+class Task(BaseModel,table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    template_name: str = Field(max_length=100,sa_type=sa.String)
 
-    @classmethod
-    def from_db(cls, db_obj) -> 'Task':
-        '''чтобы задачу из бд выдать на фронт'''
-        return cls.model_validate(db_obj)
+    question: str = Field(sa_type=sa.Text)
+    answer_options: List[Union[str, int, float]] = Field(default=[], sa_type=sa.JSON)
+    correct_answers: List[Union[str, int, float]] = Field(sa_type=sa.JSON)
+    user_answers: Optional[List[Union[str, int]]] = Field(default=None, sa_type=sa.JSON)
+    solved_at: Optional[datetime] = None
 
-    def to_orm(self) -> DBTask:
-        '''решенную задачу c фронта засунуть в бд'''
-        db_task = DBTask(**self.model_dump(exclude={"graph", "image"}))
-        
-        if self.graph:
-            db_task.graph = DBGraphData(**self.graph.model_dump())
-        
-        if self.image:
-            db_task.image = DBTaskImage(**self.image.model_dump())
-            
-        return db_task
+    table: Dict[str, Any] = Field(default={}, sa_type=sa.JSON)
+    variables: Dict[str, Any] = Field(default={}, sa_type=sa.JSON)
+    formula: Optional[str] = Field(default=None, max_length=255,sa_type=sa.String)
+
+    graph_id: Optional[int] = Field(default=None, foreign_key="graphdata.id")
+    graph: Optional[GraphData] = Relationship(back_populates="tasks")
+
+    image_id: Optional[int] = Field(default=None, foreign_key="taskimage.id")
+    image: Optional[TaskImage] = Relationship(back_populates="tasks")

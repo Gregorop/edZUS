@@ -1,6 +1,6 @@
 import pytest
 from sqlalchemy import text, select
-from app.models.base import DBTask
+from app.models.task import Task
 
 
 @pytest.mark.asyncio
@@ -10,6 +10,6 @@ async def test_clean_up(session):
     one = result.scalar_one_or_none()
     assert one == 1
 
-    result = await session.execute(select(DBTask))
+    result = await session.execute(select(Task))
     res = result.scalars().all()
     assert len(res) == 0
