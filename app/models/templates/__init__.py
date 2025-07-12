@@ -1,1 +1,1 @@
-from .test_template import TestTemplate
+from .foo_template import FooTemplate
