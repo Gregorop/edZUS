@@ -4,8 +4,12 @@ from sqlalchemy.ext.asyncio import create_async_engine
 
 from alembic import context
 from app.core.database import SQLALCHEMY_DATABASE_URL
-from app.models.task import Task, TaskImage, GraphData
-from app.models.one_action_formula import OneActionFormula
+from app.models.file import File
+from app.models.graph import GraphData, GraphType
+from app.models.one_action_formula import OneActionFormula, OneActionTaskLink
+from app.models.task import Task, TaskFileLink, TaskGraphLink, TaskTheoryLink
+from app.models.theory import Theory, TheoryFileLink, TheoryGraphLink
+
 
 from sqlmodel import SQLModel
 

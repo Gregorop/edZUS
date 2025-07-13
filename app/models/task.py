@@ -1,36 +1,42 @@
 from datetime import datetime
-from enum import Enum
 from typing import Any, Dict, List, Optional, Union
 
 import sqlalchemy as sa
-from sqlmodel import Field, Relationship
+from sqlmodel import Field, Relationship, SQLModel
 
 from app.models.base import BaseModel
 
 
-class GraphType(str, Enum):
-    line = "line"
-    histogram = "histogram"
+class TaskFileLink(SQLModel, table=True):
+    task_id: Optional[int] = Field(
+        default=None, foreign_key="task.id", primary_key=True
+    )
+    file_id: Optional[int] = Field(
+        default=None, foreign_key="file.id", primary_key=True
+    )
 
-class TaskImage(BaseModel, table=True):
+
+class TaskGraphLink(SQLModel, table=True):
+    task_id: Optional[int] = Field(
+        default=None, foreign_key="task.id", primary_key=True
+    )
+    graph_id: Optional[int] = Field(
+        default=None, foreign_key="graphdata.id", primary_key=True
+    )
+
+
+class TaskTheoryLink(SQLModel, table=True):
+    task_id: Optional[int] = Field(
+        default=None, foreign_key="task.id", primary_key=True
+    )
+    theory_id: Optional[int] = Field(
+        default=None, foreign_key="theory.id", primary_key=True
+    )
+
+
+class Task(BaseModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    base64: str = Field(sa_type=sa.Text)
-    mime_type: str = Field(max_length=50,sa_type=sa.String)  # "image/png", "image/jpeg"
-
-    tasks: List["Task"] = Relationship(back_populates="image")
-
-class GraphData(BaseModel,table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    type: GraphType = Field(max_length=20)
-    x: List[Union[float, str]] = Field(sa_type=sa.JSON)
-    y: List[float] = Field(sa_type=sa.JSON)
-    options: Dict[str, Any] = Field(default={}, sa_type=sa.JSON)
-
-    tasks: List["Task"] = Relationship(back_populates="graph")
-
-class Task(BaseModel,table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    template_name: str = Field(max_length=100,sa_type=sa.String)
+    template_name: str = Field(max_length=100, sa_type=sa.String)
 
     question: str = Field(sa_type=sa.Text)
     answer_options: List[Union[str, int, float]] = Field(default=[], sa_type=sa.JSON)
@@ -40,10 +46,19 @@ class Task(BaseModel,table=True):
 
     table: Dict[str, Any] = Field(default={}, sa_type=sa.JSON)
     variables: Dict[str, Any] = Field(default={}, sa_type=sa.JSON)
-    formula: Optional[str] = Field(default=None, max_length=255,sa_type=sa.String)
+    formula: Optional[str] = Field(default=None, max_length=255, sa_type=sa.String)
 
-    graph_id: Optional[int] = Field(default=None, foreign_key="graphdata.id")
-    graph: Optional[GraphData] = Relationship(back_populates="tasks")
+    files: List["File"] = Relationship(
+        back_populates="tasks",
+        link_model=TaskFileLink,
+    )
 
-    image_id: Optional[int] = Field(default=None, foreign_key="taskimage.id")
-    image: Optional[TaskImage] = Relationship(back_populates="tasks")
+    graphs_datas: List["GraphData"] = Relationship(
+        back_populates="tasks",
+        link_model=TaskGraphLink,
+    )
+
+    theories: List["Theory"] = Relationship(
+        back_populates="tasks",
+        link_model=TaskTheoryLink,
+    )
