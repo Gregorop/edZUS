@@ -3,11 +3,12 @@ import asyncio
 from sqlalchemy.ext.asyncio import create_async_engine
 
 from alembic import context
-from settings import LOCAL_SQLALCHEMY_DATABASE_URL
+from settings import MIGRATION_SQLALCHEMY_DATABASE_URL
+
 from app.models.base import Base
 
 config = context.config
-config.set_main_option("sqlalchemy.url", LOCAL_SQLALCHEMY_DATABASE_URL)
+config.set_main_option("sqlalchemy.url", MIGRATION_SQLALCHEMY_DATABASE_URL)
 target_metadata = Base.metadata
 
 
@@ -23,7 +24,7 @@ def do_run_migrations(connection):
 
 
 async def run_async_migrations():
-    connectable = create_async_engine(LOCAL_SQLALCHEMY_DATABASE_URL)
+    connectable = create_async_engine(MIGRATION_SQLALCHEMY_DATABASE_URL)
     async with connectable.connect() as connection:
         await connection.run_sync(do_run_migrations)
     await connectable.dispose()
