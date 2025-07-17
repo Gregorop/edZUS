@@ -2,12 +2,12 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional, Union
 
 import sqlalchemy as sa
-from sqlmodel import Field, Relationship, SQLModel
+from sqlmodel import Field, Relationship
 
 from app.models.base import BaseModel
 
 
-class TaskFileLink(SQLModel, table=True):
+class TaskFileLink(BaseModel, table=True):
     task_id: Optional[int] = Field(
         default=None, foreign_key="task.id", primary_key=True
     )
@@ -16,7 +16,7 @@ class TaskFileLink(SQLModel, table=True):
     )
 
 
-class TaskGraphLink(SQLModel, table=True):
+class TaskGraphLink(BaseModel, table=True):
     task_id: Optional[int] = Field(
         default=None, foreign_key="task.id", primary_key=True
     )
@@ -25,7 +25,7 @@ class TaskGraphLink(SQLModel, table=True):
     )
 
 
-class TaskTheoryLink(SQLModel, table=True):
+class TaskTheoryLink(BaseModel, table=True):
     task_id: Optional[int] = Field(
         default=None, foreign_key="task.id", primary_key=True
     )
