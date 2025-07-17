@@ -1,6 +1,7 @@
-from typing import Dict, Optional, List
+from typing import Dict, List, Optional
 
 import sqlalchemy as sa
+from sqlalchemy.orm import Mapped
 from sqlmodel import Field, Relationship
 
 from app.models.base import BaseModel
@@ -21,7 +22,7 @@ class OneActionFormula(BaseModel, table=True):
     question: str = Field(sa_type=sa.Text)
     param_ranges: Dict[str, list[int]] = Field(sa_type=sa.JSON)
 
-    tasks: List["Task"] = Relationship(
-        back_populates="one_action_formula",
+    tasks: Mapped[List["Task"]] = Relationship(
+        back_populates="one_action_formulas",
         link_model=OneActionTaskLink,
     )

@@ -2,9 +2,11 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional, Union
 
 import sqlalchemy as sa
+from sqlalchemy.orm import Mapped
 from sqlmodel import Field, Relationship
 
 from app.models.base import BaseModel
+from app.models.one_action_formula import OneActionTaskLink
 
 
 class TaskFileLink(BaseModel, table=True):
@@ -48,17 +50,22 @@ class Task(BaseModel, table=True):
     variables: Dict[str, Any] = Field(default={}, sa_type=sa.JSON)
     formula: Optional[str] = Field(default=None, max_length=255, sa_type=sa.String)
 
-    files: List["File"] = Relationship(
+    one_action_formulas: Mapped[List["OneActionFormula"]] = Relationship(
+        back_populates="tasks",
+        link_model=OneActionTaskLink,
+    )
+
+    files: Mapped[List["File"]] = Relationship(
         back_populates="tasks",
         link_model=TaskFileLink,
     )
 
-    graphs_datas: List["GraphData"] = Relationship(
+    graphs_datas: Mapped[List["GraphData"]] = Relationship(
         back_populates="tasks",
         link_model=TaskGraphLink,
     )
 
-    theories: List["Theory"] = Relationship(
+    theories: Mapped[List["Theory"]] = Relationship(
         back_populates="tasks",
         link_model=TaskTheoryLink,
     )

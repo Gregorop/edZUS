@@ -2,9 +2,13 @@ from enum import Enum
 from typing import Any, Dict, List, Optional, Union
 
 import sqlalchemy as sa
+from sqlalchemy.orm import Mapped
 from sqlmodel import Field, Relationship
 
 from app.models.base import BaseModel
+
+from .task import TaskGraphLink
+from .theory import TheoryGraphLink
 
 
 class GraphType(str, Enum):
@@ -19,5 +23,9 @@ class GraphData(BaseModel, table=True):
     y: List[float] = Field(sa_type=sa.JSON)
     options: Dict[str, Any] = Field(default={}, sa_type=sa.JSON)
 
-    tasks: List["Task"] = Relationship(back_populates="image")
-    theories: List["Theory"] = Relationship(back_populates="image")
+    tasks: Mapped[List["Task"]] = Relationship(
+        back_populates="graphs_datas", link_model=TaskGraphLink
+    )
+    theories: Mapped[List["Theory"]] = Relationship(
+        back_populates="graphs_datas", link_model=TheoryGraphLink
+    )

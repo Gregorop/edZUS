@@ -1,9 +1,13 @@
 from typing import List, Optional
 
 import sqlalchemy as sa
+from sqlalchemy.orm import Mapped
 from sqlmodel import Field, Relationship
 
 from app.models.base import BaseModel
+
+from .task import TaskFileLink
+from .theory import TheoryFileLink
 
 
 class File(BaseModel, table=True):
@@ -12,5 +16,9 @@ class File(BaseModel, table=True):
     file_name: str = Field(max_length=255, sa_type=sa.String)
     file_extension: str = Field(max_length=20, sa_type=sa.String)
 
-    tasks: List["Task"] = Relationship(back_populates="file")
-    theories: List["Theory"] = Relationship(back_populates="file")
+    tasks: Mapped[List["Task"]] = Relationship(
+        back_populates="files", link_model=TaskFileLink
+    )
+    theories: Mapped[List["Theory"]] = Relationship(
+        back_populates="files", link_model=TheoryFileLink
+    )
