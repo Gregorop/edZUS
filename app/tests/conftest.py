@@ -3,6 +3,7 @@ from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import NullPool
+from app.models import *  # noqa: F403
 from app.models.base import Base
 from settings import SQLALCHEMY_DATABASE_URL
 
