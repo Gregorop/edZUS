@@ -4,17 +4,11 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from sqlmodel import SQLModel
 
 from alembic import context
-from app.models.file import File
-from app.models.graph import GraphData, GraphType
-from app.models.one_action_formula import OneActionFormula, OneActionTaskLink
-from app.models.task import Task, TaskFileLink, TaskGraphLink, TaskTheoryLink
-from app.models.theory import Theory, TheoryFileLink, TheoryGraphLink
-from settings import LOCAL_SQLALCHEMY_DATABASE_URL
+from app.models import *  # noqa: F403
+from settings import LOCAL_SQLALCHEMY_DATABASE_URL, SQLALCHEMY_DATABASE_URL
 
-target_metadata = SQLModel.metadata
 config = context.config
-
-config.set_main_option("sqlalchemy.url", LOCAL_SQLALCHEMY_DATABASE_URL)
+config.set_main_option("sqlalchemy.url", SQLALCHEMY_DATABASE_URL)
 target_metadata = SQLModel.metadata
 
 
