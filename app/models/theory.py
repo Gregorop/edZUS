@@ -1,12 +1,12 @@
 from typing import List, Optional
 
 import sqlalchemy as sa
-from sqlmodel import Field, Relationship, SQLModel
+from sqlmodel import Field, Relationship
 
 from app.models.base import BaseModel
 
 
-class TheoryFileLink(SQLModel, table=True):
+class TheoryFileLink(BaseModel, table=True):
     theory_id: Optional[int] = Field(
         default=None, foreign_key="theory.id", primary_key=True
     )
@@ -15,7 +15,7 @@ class TheoryFileLink(SQLModel, table=True):
     )
 
 
-class TheoryGraphLink(SQLModel, table=True):
+class TheoryGraphLink(BaseModel, table=True):
     theory_id: Optional[int] = Field(
         default=None, foreign_key="theory.id", primary_key=True
     )

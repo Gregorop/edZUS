@@ -1,12 +1,12 @@
 from typing import Dict, Optional, List
 
 import sqlalchemy as sa
-from sqlmodel import Field, Relationship, SQLModel
+from sqlmodel import Field, Relationship
 
 from app.models.base import BaseModel
 
 
-class OneActionTaskLink(SQLModel, table=True):
+class OneActionTaskLink(BaseModel, table=True):
     task_id: Optional[int] = Field(
         default=None, foreign_key="task.id", primary_key=True
     )
